@@ -1,0 +1,15 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: PowerShell@2
+  inputs:
+    filePath: '$(Build.SourcesDirectory)/build.ps1'
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Build.SourcesDirectory)/*.nupkg'
+    artifact: 'DacPacBuilder'
+    publishLocation: 'pipeline'
