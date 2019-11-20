@@ -1,0 +1,9 @@
+mode: Mainline
+branches:
+  master:
+    mode: ContinuousDeployment
+    tag: alpha
+  release: {}
+ignore:
+  sha: []
+merge-message-formats: {}
