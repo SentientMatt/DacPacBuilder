@@ -17,3 +17,19 @@ steps:
 
 - publish: '$(Build.SourcesDirectory)/artifacts/DacPacBuilder.$(Build.BuildNumber).nupkg'
   artifact: DacPacBuilder
+
+- task: NuGetCommand@2
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.SourcesDirectory)/artifacts/DacPacBuilder.$(Build.BuildNumber).nupkg'
+    nuGetFeedType: 'internal'
+    publishVstsFeed: 'b446385e-b31c-4205-87b7-56ee7e324b2d'
+  
+- task: NuGetCommand@2
+  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.SourcesDirectory)/artifacts/DacPacBuilder.$(Build.BuildNumber).nupkg'
+    nuGetFeedType: 'external'
+    publishFeedCredentials: 'DacPacBuilder Nuget'
+
