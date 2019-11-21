@@ -5,11 +5,15 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    useGlobalJson: true
+
 - task: PowerShell@2
+  displayName: Build
   inputs:
     filePath: '$(Build.SourcesDirectory)/build.ps1'
-- task: PublishPipelineArtifact@1
-  inputs:
-    targetPath: '$(Build.SourcesDirectory)/*.nupkg'
-    artifact: 'DacPacBuilder'
-    publishLocation: 'pipeline'
+
+- publish: '$(Build.SourcesDirectory)/artifacts/DacPacBuilder.$(Build.BuildNumber).nupkg'
+  artifact: DacPacBuilder
